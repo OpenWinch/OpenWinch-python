@@ -5,7 +5,8 @@
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
 from flask import ( Blueprint, render_template )
-from openwinch.controller import ( winch, State )
+from openwinch.controller import ( State )
+from openwinch.singleton import ( winch )
 
 web_main = Blueprint('web_main', __name__)
 
@@ -18,7 +19,7 @@ def render_main():
     elif (winch.getState() == State.UNKNOWN or winch.getState() == State.INIT):
         enable = "orange"
 
-    return render_template("index.html", ip="192.168.0.81", mode="One Way", battery=90, speed_target=winch.getSpeedTarget(), speed_unit="Km/h", enable=enable)
+    return render_template("index.html", ip="192.168.0.34", mode="One Way", battery=90, speed_target=winch.getSpeedTarget(), speed_unit="Km/h", enable=enable)
 
 @web_main.route("/")
 def index():
