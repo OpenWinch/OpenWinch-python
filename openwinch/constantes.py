@@ -5,6 +5,7 @@
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
 SPEED_MAX = 35
+SPEED_INIT = 28
 SPEED_MIN = 1
 
 #LOOP_DELAY = 0.01

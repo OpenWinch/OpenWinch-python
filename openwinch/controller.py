@@ -6,7 +6,7 @@
 
 from openwinch.version import __version__
 from openwinch.hardware import ( Board, RaspberryPi )
-from openwinch.mode import ( modeFactory, Mode, ModeEngine, OneWayMode, TwoWayMode, InfinityMode )
+from openwinch.mode import ( modeFactory, getMode, Mode, ModeEngine, OneWayMode, TwoWayMode, InfinityMode )
 from openwinch.logger import logger
 from openwinch.constantes import *
 
@@ -30,11 +30,11 @@ class Winch(object):
     """ Winch controller class. """
 
     __state = State.UNKNOWN
-    __speed_target   = 28
+    __speed_target = SPEED_INIT
     #__controlLoop
     #__log
     #__mode
-    __board = RaspberryPi()
+    #__board = RaspberryPi()
 
     def __init__(self):
         """ Constructor of Winch class. """
@@ -44,7 +44,7 @@ class Winch(object):
         threading.currentThread().setName("Main")
 
         self.__banner()
-        self.__mode = modeFactory(self, Mode.OneWay)
+        self.__loadConfig()
         self.__initControlLoop()
 
     # def __del__(self):
@@ -62,6 +62,13 @@ class Winch(object):
 \____/ .___/\___/_/ /_/|__/|__/_/_/ /_/\___/_/ /_/ 
     /_/                                            Ver. %s""" % __version__)
 
+    def __loadConfig(self):
+        self.__mode = modeFactory(self, Mode.OneWay)
+        logger.info("Mode : %s" % self.getMode())
+
+        self.__board = RaspberryPi()
+        logger.info("Board : %s" % type(self.__board).__name__)
+
     def __initControlLoop(self):
         """ Initialize Control Loop thread. """
 
@@ -78,9 +85,9 @@ class Winch(object):
         """
 
         logger.debug("Initialize Winch hardware...")
-        self.__changeMode(State.INIT)
+        self.__changeState(State.INIT)
         # Split in two function
-        self.__changeMode(State.IDLE)
+        self.__changeState(State.IDLE)
         logger.info("Initialized Winch !")
 
     def start(self):
@@ -89,7 +96,7 @@ class Winch(object):
         logger.info("Press Start")
 
         if (self.__state == State.IDLE or self.__state == State.STOP):
-            self.__changeMode(State.START)
+            self.__changeState(State.START)
 
         elif (self.__state == State.START):
             logger.warning("Switch mode alway enable !")
@@ -101,7 +108,7 @@ class Winch(object):
         """ Call when hardware process start completely. """
 
         if (self.__state == State.START):
-            self.__changeMode(State.RUNNING)
+            self.__changeState(State.RUNNING)
 
     def stop(self):
         """ Command Stop winch """
@@ -109,7 +116,7 @@ class Winch(object):
         logger.info("Press Stop")
 
         if (self.__state == State.RUNNING or self.__state == State.START):
-            self.__changeMode(State.STOP)
+            self.__changeState(State.STOP)
 
         elif (self.__state == State.STOP):
             logger.warning("Switch mode alway enable !")
@@ -121,21 +128,21 @@ class Winch(object):
         """ Call when hardware stop completely. """
 
         if (self.__state == State.STOP):
-            self.__changeMode(State.IDLE)
+            self.__changeState(State.IDLE)
     
     def emergency(self):
         """ Command Emergency winch. """
 
         logger.fatal("HALT EMERGENCY")
-        self.__changeMode(State.ERROR)
+        self.__changeState(State.ERROR)
 
     def display(self):
         """ Process display in console. """
 
         print("State\t: %s\nTarget Speed\t: %s\nCurrent speed\t: %s" % (self.__state, self.__speed_target, self.__mode.getSpeedCurrent()))
 
-    def __changeMode(self, mode):
-        """ Change State mode of machine-state
+    def __changeState(self, state):
+        """ Change State of machine-state
         
         Parameters
         ----------
@@ -143,8 +150,12 @@ class Winch(object):
             Mode to enable.
         """
 
-        logger.debug("Switch mode : %s", mode)
-        self.__state = mode
+        logger.debug("Switch state : %s", state)
+        self.__state = state
+
+    def getMode(self) -> Mode:
+        """ """
+        return getMode(self.__mode)
 
     def getSpeedTarget(self):
         """ Get Target speed of winch."""
