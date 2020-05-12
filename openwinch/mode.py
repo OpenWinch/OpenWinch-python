@@ -101,3 +101,12 @@ def modeFactory(winch, mode):
         return TwoWayMode(winch)
     elif (mode == Mode.Infinity):
         return InfinityMode(winch)
+
+def getMode(modeEngine) -> Mode:
+    """ """
+    if (isinstance(modeEngine, OneWayMode)):
+        return Mode.OneWay
+    elif (isinstance(modeEngine, TwoWayMode)):
+        return Mode.TwoWay
+    elif (isinstance(modeEngine, InfinityMode)):
+        return Mode.Infinity

@@ -4,15 +4,12 @@
 
 {% block head %}
     {{ super() }}
-    <!--script src="script.js"></script-->
     <script language="javascript">
       setInterval(function(){
-        url = "http://{{ ip }}:5000/";
+        url = '{{ request.url_root }}';
         window.location.assign(url);
-        //window.location = url;
-        //window.location.reload(1);
       }, 3000);
-      </script>
+    </script>
 {% endblock %}
 
 {% block content %}

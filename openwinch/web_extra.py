@@ -4,14 +4,14 @@
 # OpneWinchPy : a library for controlling the Raspberry Pi's Winch
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
-from flask import ( Blueprint, render_template )
+from flask import ( Blueprint, request, render_template )
 from openwinch.controller import ( State )
 from openwinch.singleton import ( winch )
 
 web_extra = Blueprint('web_extra', __name__)
 
 def render_extra():
-    return render_template("extra.html", ip="192.168.0.34", mode="One Way", battery=90, speed_target=winch.getSpeedTarget(), speed_unit="Km/h", enable="white")
+    return render_template("extra.html", mode=winch.getMode(), battery=90, speed_target=winch.getSpeedTarget(), speed_unit="Km/h", enable="white")
 
 @web_extra.route("/extra")
 def extra():
