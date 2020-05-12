@@ -4,6 +4,6 @@
 # OpneWinchPy : a library for controlling the Raspberry Pi's Winch
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
-IN_REVERSE = 3
+IN_REVERSE = 17
 
-OUT_REVERSE = -1
+OUT_REVERSE = 27

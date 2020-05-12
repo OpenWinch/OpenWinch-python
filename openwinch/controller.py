@@ -33,7 +33,6 @@ class Winch(object):
     __speed_target = SPEED_INIT
     #__controlLoop
     #__log
-    __board = loadClass("openwinch.hardware.Emulator")
 
     def __init__(self):
         """ Constructor of Winch class. """
@@ -65,7 +64,7 @@ class Winch(object):
         self.__mode = modeFactory(self, Mode.OneWay)
         logger.info("Mode : %s" % self.getMode())
 
-        self.__board = RaspberryPi()
+        self.__board = loadClass("openwinch.hardwarePi.RaspberryPi")
         logger.info("Board : %s" % type(self.__board).__name__)
 
     def __initControlLoop(self):

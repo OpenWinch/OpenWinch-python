@@ -11,6 +11,7 @@ import importlib
 def loadClass(fullclass):
     """Return a class instance from a string reference"""
     module_name, class_name = fullclass.rsplit(".", 1)
+    instance = None
     try:
         module = importlib.import_module(module_name)
         try:
@@ -20,4 +21,4 @@ def loadClass(fullclass):
             logger.error('Class does not exist')
     except ImportError:
         logger.error('Module does not exist')
-    return instance or None
+    return instance

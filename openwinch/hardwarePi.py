@@ -5,6 +5,8 @@
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
 from openwinch.hardware import Board
+from openwinch.hardware_config import *
+from openwinch.logger import logger
 
 from gpiozero import LED, Button, Servo, OutputDevice
 
@@ -15,9 +17,9 @@ class RaspberryPi(Board):
 #        self.__reverse_btn.button.when_pressed = 
         self.__reverse_cmd = OutputDevice(OUT_REVERSE)
 
-def setReverse(self, enable):
-    super().setReverse(enable)
-    if (self._reverse):
-        self.__reverse_cmd.off()
-    else:
-        self.__reverse_cmd.on()
+    def setReverse(self, enable):
+        super().setReverse(enable)
+        if (self._reverse):
+            self.__reverse_cmd.off()
+        else:
+            self.__reverse_cmd.on()
