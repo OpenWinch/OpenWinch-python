@@ -5,9 +5,9 @@
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
 from openwinch.version import __version__
-from openwinch.hardware import ( Board, RaspberryPi )
 from openwinch.mode import ( modeFactory, Mode, ModeEngine, OneWayMode, TwoWayMode, InfinityMode )
 from openwinch.logger import logger
+from openwinch.utils import loadClass
 from openwinch.constantes import *
 
 from enum import Enum, unique
@@ -34,7 +34,7 @@ class Winch(object):
     #__controlLoop
     #__log
     #__mode
-    __board = RaspberryPi()
+    __board = loadClass("openwinch.hardware.Emulator")
 
     def __init__(self):
         """ Constructor of Winch class. """
