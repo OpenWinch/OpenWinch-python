@@ -4,6 +4,8 @@
 # OpneWinchPy : a library for controlling the Raspberry Pi's Winch
 # Copyright (c) 2020 Mickael Gaillard <mick.gaillard@gmail.com>
 
+# Speed in km/h
+MOTOR_MAX = 45
 SPEED_MAX = 35
 SPEED_INIT = 28
 SPEED_MIN = 1
