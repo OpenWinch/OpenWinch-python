@@ -21,16 +21,28 @@ class Board(ABC):
     _reverse = False
     _speed_mode = SpeedMode.LOW
 
+    @abstractmethod
+    def initialize(self):
+        pass
+
+    @abstractmethod
+    def setThrottleValue(self, value):
+        pass
+
+    @abstractmethod
+    def getThrottleValue(self):
+        pass
+
     def setReverse(self, enable):
         self._reverse = enable
-        logger.debug("IO: Change Reverse mode to : %s" % self.isReverse())
+        logger.debug("IO : Change Reverse mode to : %s" % self.isReverse())
+
+    def isReverse(self):
+        return self._reverse
 
     def setSpeedMode(self, speed_mode):
         self._speed_mode = speed_mode
         logger.debug("IO : Change Speed mode to %s" % self.getSpeedMode())
-
-    def isReverse(self):
-        return self._reverse
 
     def getSpeedMode(self):
         return self._speed_mode

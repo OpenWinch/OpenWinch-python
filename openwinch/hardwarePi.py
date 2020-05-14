@@ -8,7 +8,7 @@ from openwinch.hardware import ( Board, SpeedMode )
 from openwinch.hardware_config import *
 from openwinch.logger import logger
 
-from gpiozero import LED, Button, Servo, OutputDevice
+from gpiozero import Button, PWMOutputDevice, OutputDevice
 
 class RaspberryPi(Board):
 
@@ -28,7 +28,7 @@ class RaspberryPi(Board):
         self.__speedHi_cmd = OutputDevice(OUT_SPD_HI)
 
         # Throlle
-        self.__throttle_cmd = PWMOutputDevice(OUT_THROLLE)
+        self.__throttle_cmd = PWMOutputDevice(OUT_THROTTLE)
 
         # Register event
         self.__reverse_btn.when_pressed = self.__pressedReverse
@@ -36,7 +36,10 @@ class RaspberryPi(Board):
         self.__move_left_btn            = self.__pressedLeft
         self.__move_right_btn           = self.__pressedRight
 
-        # Init
+        self.initialize()
+
+    def initialize(self):
+        """ Initialize """
         self.setReverse(False)
         self.setSpeedMode(SpeedMode.LOW)
         self.__throttle_cmd.on()
@@ -59,7 +62,12 @@ class RaspberryPi(Board):
         self.setReverse(not self.isReverse())
 
     def setThrottleValue(self, value):
-        logger.debug("IO : Reverse pressed !")
+        if (self.__throttle_cmd.value != value):
+            logger.debug("IO : Throttle to %s" % value)
+            self.__throttle_cmd.value = value
+
+    def getThrottleValue(self):
+        return self.__throttle_cmd.value
 
     def setSpeedMode(self, speed_mode):
         super().setSpeedMode(speed_mode)

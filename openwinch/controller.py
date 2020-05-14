@@ -61,11 +61,11 @@ class Winch(object):
     /_/                                            Ver. %s""" % __version__)
 
     def __loadConfig(self):
-        self.__mode = modeFactory(self, Mode.OneWay)
-        logger.info("Mode : %s" % self.getMode())
+        board = loadClass("openwinch.hardwarePi.RaspberryPi")
+        logger.info("Board : %s" % type(board).__name__)
 
-        self.__board = loadClass("openwinch.hardwarePi.RaspberryPi")
-        logger.info("Board : %s" % type(self.__board).__name__)
+        self.__mode = modeFactory(self, board, Mode.OneWay)
+        logger.info("Mode : %s" % self.getMode())
 
     def __initControlLoop(self):
         """ Initialize Control Loop thread. """
