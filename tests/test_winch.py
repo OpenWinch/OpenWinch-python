@@ -48,6 +48,5 @@ class WinchTest(unittest.TestCase):
 
         winch.speedUp(5)
         time.sleep(1)
-
-        del winch
+        
         print("END !!")
